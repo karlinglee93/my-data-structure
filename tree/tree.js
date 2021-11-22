@@ -8,7 +8,7 @@ class Node {
     this.left = null;
     this.right = null;
   }
-}
+}    
 
 export default class BinarySearchTree {
   constructor(compareFn = defaultCompare) {
@@ -41,10 +41,21 @@ export default class BinarySearchTree {
     this._inOrderTraverseIterativeNode(this.root, callback);
   }
 
-  max() {}
-  min() {}
-  search() {}
-  remove() {}
+  min() {
+      return this._minNode(this.root);
+  }
+  
+  max() {
+      return this._maxNode(this.root);
+  }
+  
+  search(key) {
+      return this._searchNode(this.root, key);
+  }
+  
+  remove() {
+      this.root = this._removeNode(this.root, key);
+  }
 
   _insertNode(node, key) {
     if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
@@ -99,5 +110,81 @@ export default class BinarySearchTree {
       callback(node.key);
       node = node.right;
     }
+  }
+  
+  _preOrderTraverseIterativeNode(node, callback) {
+    const stack = [];
+    stack.push(node);
+    
+    while (stack.length > 0) {
+        const curr = stack.pop();
+        callback(curr.key);
+        stack.push(cur.right);
+        stack.push(cur.left);
+    }
+  }
+  
+  _postOrderTraverseIterativeNode(node, callback) {
+    // to hard for me
+  }
+  
+  _minNode(node) {
+      let current = node;
+      while (current != null && current.left != null) {
+          current = current.left;
+      }
+      return current;
+  }
+  
+  _maxNode(node) {
+      let current = node;
+      while (current != null && current.right != null) {
+          current = current.right;
+      }
+      return current;
+  }
+  
+  _searchNode(node, key) {
+      if (node == null) return false;
+      
+      if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
+          return _searchNode(node.left, key);
+      } else if (this.compareFn(key, node.key) === Compare.BIGGER_THAN) {
+          return _searchNode(node.right, key);
+      } else {
+          return true;
+      }
+  }
+  
+  _removeNode(node, key) {
+      if (node == null) {
+          return node;
+      }
+      
+      if (this.compareFn(key, node.key) === Compare.LESS_THAN) {
+          node.left = this._removeNode(node.left, key);
+          return node;
+      } else if (this.compareFn(key, node.key) === Compare.BIGGER_THAN) {
+          node.right = this._removeNode(node.right, key);
+          return node;
+      } else {
+          if (node.left == null && node.right == null) {
+              node = null;
+              return node;
+          }
+          
+          if (node.left == null) {
+              node = node.right;
+              return node;
+          } else if (node.right == null) {
+              node = node.left;
+              return node;
+          }
+          
+          const aux = this._minNode(node.right);
+          node.key = aux.key;
+          node.right = this.removeNode(node.right, aux.key);
+          return node;
+      }
   }
 }
