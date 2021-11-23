@@ -40,6 +40,16 @@ export default class BinarySearchTree {
   inOrderTraverseIterative(callback) {
     this._inOrderTraverseIterativeNode(this.root, callback);
   }
+  
+  levelTraverse(callback) {
+      // queue
+      this._levelTraverseNode(this.root, callback);
+  }
+  
+  depthFirstTraverse(callback) {
+      // stack and the same as preOrderTraverse()
+      this._preOrderTraverseNode(this.root, callback);
+  }
 
   min() {
       return this._minNode(this.root);
@@ -80,20 +90,27 @@ export default class BinarySearchTree {
       this._preOrderTraverseNode(node.right, callback);
     }
   }
+  
+  _preOrderTraverseIterativeNode(node, callback) {
+    if (node == null) return;
+    
+    const stack = [];
+    stack.push(node);
+    
+    while (stack.length > 0) {
+        const curr = stack.pop();
+        callback(curr.key);
+        
+        if (cur.right) stack.push(cur.right);
+        if (cur.left) stack.push(cur.left);
+    }
+  }
 
   _inOrderTraverseNode(node, callback) {
     if (node !== null) {
       this._inOrderTraverseNode(node.left, callback);
       callback(node.key);
       this._inOrderTraverseNode(node.right, callback);
-    }
-  }
-
-  _postOrderTraverseNode(node, callback) {
-    if (node !== null) {
-      this._postOrderTraverseNode(node.left, callback);
-      this._postOrderTraverseNode(node.right, callback);
-      callback(node.key);
     }
   }
 
@@ -111,21 +128,35 @@ export default class BinarySearchTree {
       node = node.right;
     }
   }
-  
-  _preOrderTraverseIterativeNode(node, callback) {
-    const stack = [];
-    stack.push(node);
-    
-    while (stack.length > 0) {
-        const curr = stack.pop();
-        callback(curr.key);
-        stack.push(cur.right);
-        stack.push(cur.left);
+
+  _postOrderTraverseNode(node, callback) {
+    if (node !== null) {
+      this._postOrderTraverseNode(node.left, callback);
+      this._postOrderTraverseNode(node.right, callback);
+      callback(node.key);
     }
   }
   
   _postOrderTraverseIterativeNode(node, callback) {
     // to hard for me
+  }
+  
+  _levelTraverseNode(node, callback) {
+      // queue
+      const queue = [];
+      queue.push(node);
+      
+      while (queue.length > 0) {
+          node = queue.shift();
+          callback(node.key);
+          
+          if (node.left) {
+              queue.push(node.left);
+          }
+          if (node.right) {
+              queue.push(node.right);
+          }
+      }
   }
   
   _minNode(node) {

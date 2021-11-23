@@ -19,6 +19,6 @@ tree.insert(25);
 tree.insert(6);
 
 // tree.inOrderTraverse(printNodeKey);
-// tree.preOrderTraverse(printNodeKey);
+tree.preOrderTraverse(printNodeKey);
 // tree.postOrderTraverse(printNodeKey);
-tree.inOrderTraverseIterative(printNodeKey);
+// tree.inOrderTraverseIterative(printNodeKey);
